@@ -128,4 +128,17 @@ sudo a2dissite 000-default.conf
 sudo apache2ctl configtest
 ```
 
-Ve en son `sudo systemctl restart apache2` işleminden sonra tarayıcınızda 127.0.0.1:80 için ve 127.0.0.1:81 için farklı cevaplar göreceksiniz.
+Artık portlarımızı açmalıyız. Ve dinlemeye başlamalıyız. Bunun için aşağıdkai adımları takip ediniz. `sudo vi /etc/apache2/ports.conf` Daha sonra `Listen 81` kodunu ekleyip dosyayı kaydediniz. Şimdi `sudo systemctl restart apache2` işleminden sonra tarayıcınızda 127.0.0.1:80 için ve 127.0.0.1:81 için farklı cevaplar göreceksiniz.
+
+# PHP Kurulumu
+Php kurulumu için lütfen aşağıdaki adımları takip ediniz. Ben kurulum yaparken php5'i kurmayı deneyeceğim ancak php güvenlik nedenlerinden dolayı php7'yi kurabilir. Bundan dolayı daha sonrasında versiyon değiştirme işlemi yapacağım.  
+```sh
+sudo su
+apt-get purge `dpkg -l | grep php| awk '{print $2}' |tr "\n" " "`
+add-apt-repository ppa:ondrej/php
+apt-get update
+apt-get install build-essential libaio1 php5.6-dev php-pear php5.6-soap php5.6-sybase php5.6-gd php5.6-xdebug php5.6-xml
+apt-get install libapache2-mod-php5.6
+a2dismod php7.0 ; a2enmod php5.6 ; service apache2 restart
+```
+Ve php5 sisteme yüklendi.
